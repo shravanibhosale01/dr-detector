@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}RetinaScan{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="{{ url_for('index') }}" class="brand">👁️ RetinaScan</a>
+      <div class="nav-links">
+        <a href="{{ url_for('index') }}">Detect</a>
+        <a href="{{ url_for('history') }}">History</a>
+        <a href="{{ url_for('learn') }}">Learn</a>
+        <a href="{{ url_for('hospitals') }}">Find a Doctor</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="flash-messages">
+          {% for m in messages %}
+            <div class="flash">{{ m }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <p>RetinaScan is a screening aid, not a medical diagnosis. Always consult an ophthalmologist.</p>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>

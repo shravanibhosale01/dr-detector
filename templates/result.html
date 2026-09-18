@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Result — RetinaScan{% endblock %}
+{% block content %}
+  <div class="card result-grid">
+    <div class="result-image">
+      <img src="{{ url_for('static', filename='uploads/' + image_file) }}" alt="Retinal image">
+    </div>
+    <div>
+      <h2>{{ result['class'] }}</h2>
+      <span class="risk-badge risk-{{ result['risk'] }}">{{ result['risk'] }} Risk</span>
+
+      <p style="margin-top:16px;">Confidence: <strong>{{ result['confidence'] }}%</strong></p>
+      <div class="confidence-bar-track">
+        <div class="confidence-bar-fill" style="width: {{ result['confidence'] }}%;"></div>
+      </div>
+
+      <p>{{ result['description'] }}</p>
+      <p><strong>Recommendation:</strong> {{ result['recommendation'] }}</p>
+
+      <div class="actions">
+        <a href="{{ url_for('download_report', prediction_id=prediction_id) }}" class="btn">📄 Download PDF Report</a>
+        <a href="{{ url_for('hospitals') }}" class="btn btn-secondary">🏥 Find a Nearby Specialist</a>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">↻ Analyze Another</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Confidence Breakdown</h3>
+    <table class="scores">
+      <tr><th>Class</th><th>Confidence</th></tr>
+      {% for cls, score in result['all_scores'].items() %}
+      <tr><td>{{ cls }}</td><td>{{ score }}%</td></tr>
+      {% endfor %}
+    </table>
+  </div>
+{% endblock %}

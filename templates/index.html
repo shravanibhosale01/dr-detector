@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}RetinaScan — Detect{% endblock %}
+{% block content %}
+  <div class="hero">
+    <h1>Diabetic Retinopathy Screening</h1>
+    <p>Upload a retinal (fundus) image to get an AI-assisted severity assessment.</p>
+  </div>
+
+  <div class="card">
+    <form action="{{ url_for('predict_route') }}" method="post" enctype="multipart/form-data" id="upload-form">
+      <div class="upload-box" id="drop-area">
+        <p>📤 Drag & drop a retinal image here, or choose a file</p>
+        <input type="file" name="image" id="file-input" accept=".png,.jpg,.jpeg" required>
+        <img id="preview" alt="preview">
+      </div>
+      <div class="actions">
+        <button type="submit">Analyze Image</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h3>How it works</h3>
+    <p>The image is preprocessed (cropped, resized, contrast-enhanced) and passed through a
+      MobileNetV2-based convolutional neural network fine-tuned on labeled retinal images.
+      The model outputs a severity class from <strong>No DR</strong> to
+      <strong>Proliferative DR</strong>, along with a confidence score and risk level.</p>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+{% endblock %}

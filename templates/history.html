@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}History — RetinaScan{% endblock %}
+{% block content %}
+  <div class="hero">
+    <h1>Prediction History</h1>
+    <p>All past screenings performed on this device.</p>
+  </div>
+
+  <div class="card">
+    {% if records %}
+      {% for r in records %}
+        <div class="history-item">
+          <div>
+            <strong>{{ r['class'] }}</strong>
+            <span class="risk-badge risk-{{ r['risk'] }}" style="margin-left:8px; font-size:0.75rem;">{{ r['risk'] }}</span>
+            <div style="color:#6b7280; font-size:0.85rem;">{{ r['created_at'] }} · {{ r['confidence'] }}% confidence</div>
+          </div>
+          <a href="{{ url_for('download_report', prediction_id=r['id']) }}" class="btn btn-secondary">PDF</a>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No predictions yet. <a href="{{ url_for('index') }}">Analyze an image</a> to get started.</p>
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block title %}Find a Doctor — RetinaScan{% endblock %}
+{% block content %}
+  <div class="hero">
+    <h1>Find a Nearby Eye Specialist</h1>
+    <p>Locate ophthalmologists and eye hospitals close to you.</p>
+  </div>
+
+  <div class="card">
+    {% if not maps_api_key %}
+      <p><strong>⚠️ Google Maps API key not configured.</strong> Set the
+        <code>GOOGLE_MAPS_API_KEY</code> environment variable to enable this feature.
+        Get a free key at
+        <a href="https://console.cloud.google.com/google/maps-apis" target="_blank">Google Cloud Console</a>
+        (enable "Maps JavaScript API" and "Places API").</p>
+    {% else %}
+      <div id="map"></div>
+      <p id="status" style="color:#6b7280; margin-top:10px;">Locating you…</p>
+    {% endif %}
+  </div>
+{% endblock %}
+
+{% block scripts %}
+{% if maps_api_key %}
+<script>
+  let map, service, infoWindow;
+
+  function initMap() {
+    const status = document.getElementById('status');
+
+    if (!navigator.geolocation) {
+      status.textContent = "Geolocation is not supported by your browser.";
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const userLocation = {
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+      };
+
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: userLocation,
+        zoom: 13,
+      });
+
+      new google.maps.Marker({
+        position: userLocation,
+        map,
+        title: "You are here",
+        icon: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+      });
+
+      infoWindow = new google.maps.InfoWindow();
+      service = new google.maps.places.PlacesService(map);
+
+      service.nearbySearch({
+        location: userLocation,
+        radius: 8000,
+        keyword: "eye hospital ophthalmologist",
+      }, (results, placeStatus) => {
+        if (placeStatus === google.maps.places.PlacesServiceStatus.OK) {
+          results.forEach(place => {
+            const marker = new google.maps.Marker({
+              position: place.geometry.location,
+              map,
+              title: place.name,
+            });
+            marker.addListener("click", () => {
+              infoWindow.setContent(
+                `<strong>${place.name}</strong><br>${place.vicinity || ''}<br>Rating: ${place.rating || 'N/A'}`
+              );
+              infoWindow.open(map, marker);
+            });
+          });
+          status.textContent = `Found ${results.length} nearby eye care providers.`;
+        } else {
+          status.textContent = "No nearby eye specialists found.";
+        }
+      });
+    }, () => {
+      status.textContent = "Location access denied. Enable location services to see nearby providers.";
+    });
+  }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ maps_api_key }}&libraries=places&callback=initMap" async defer></script>
+{% endif %}
+{% endblock %}

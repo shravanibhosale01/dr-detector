@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Learn — RetinaScan{% endblock %}
+{% block content %}
+  <div class="hero">
+    <h1>Understanding Diabetic Retinopathy</h1>
+    <p>Diabetic retinopathy (DR) is an eye condition caused by damage to the blood vessels
+      of the retina due to prolonged high blood sugar. It's a leading cause of vision loss
+      in adults with diabetes.</p>
+  </div>
+
+  <div class="class-grid">
+    <div class="card">
+      <h3>No DR</h3>
+      <span class="risk-badge risk-Low">Low Risk</span>
+      <p style="margin-top:10px;">No visible retinal damage. Continue routine annual screening.</p>
+    </div>
+    <div class="card">
+      <h3>Mild</h3>
+      <span class="risk-badge risk-Low">Low Risk</span>
+      <p style="margin-top:10px;">Microaneurysms (tiny balloon-like swellings) appear in the retina's blood vessels.</p>
+    </div>
+    <div class="card">
+      <h3>Moderate</h3>
+      <span class="risk-badge risk-Medium">Medium Risk</span>
+      <p style="margin-top:10px;">Blood vessels that nourish the retina become blocked, more damage is visible.</p>
+    </div>
+    <div class="card">
+      <h3>Severe</h3>
+      <span class="risk-badge risk-High">High Risk</span>
+      <p style="margin-top:10px;">Many more blood vessels are blocked, cutting off blood supply to areas of the retina.</p>
+    </div>
+    <div class="card">
+      <h3>Proliferative DR</h3>
+      <span class="risk-badge risk-High">High Risk</span>
+      <p style="margin-top:10px;">The most advanced stage — abnormal new blood vessels grow, risking severe vision loss.</p>
+    </div>
+    <div class="card">
+      <h3>Prevention Tips</h3>
+      <ul>
+        <li>Keep blood sugar levels well controlled</li>
+        <li>Manage blood pressure and cholesterol</li>
+        <li>Get annual dilated eye exams</li>
+        <li>Don't smoke</li>
+      </ul>
+    </div>
+  </div>
+{% endblock %}
