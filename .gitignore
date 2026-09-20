@@ -4,7 +4,7 @@ __pycache__/
 *.pyc
 
 # Trained model (too large for git, download separately via training/train_model.py)
-model/*.h5
+
 
 # Runtime data
 instance/*.db
